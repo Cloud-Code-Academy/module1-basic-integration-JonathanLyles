@@ -47,4 +47,5 @@ $RECYCLE.BIN/
 /force-app/main/solutions
 /authFile.json
 
+# Repo secrets
 auth.json
