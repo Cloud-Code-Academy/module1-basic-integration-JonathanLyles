@@ -9,17 +9,37 @@ public class JSONPlaceholderExercise {
      */
     public static String getPostById(Integer postId) {
         // TODO: Student Implementation
+        Http http = new http();
         // 1. Create a new HTTP request
         HttpRequest request = new HttpRequest();
         // 2. Set the endpoint URL using BASE_URL + '/posts/' + postId
         request.setEndpoint('callout:JsonPlaceholder/posts/'+postId);
         // 3. Set the HTTP method to 'GET'
         request.setMethod('GET');
-        // 4. Send the request and get the response
-        Http http = new http();
-        HttpResponse response = http.send(request);
-        // 5. Return the response body as string
-        return response.getBody();
+        // Challenge #2 - Implement request timeouts
+        request.setTimeout(5000);
+        try{
+            // 4. Send the request and get the response    
+            HttpResponse response = http.send(request);
+            // Challenge #1 - Add error handling for non-200 status codes
+            if(response.getStatusCode() >= 200 && response.getStatusCode() <= 300){
+                // 5. Return the response body as string
+                return response.getBody();
+            }else{
+                // Challenge #4 - Create custom exception classes
+                // Throw exception if status code is non-200s
+                throw new MyCustomCalloutException('Something bad happened');
+            }
+        }catch(MyCustomCalloutException e){
+            System.debug('Custom Exception: ' + e.getMessage());
+            return 'Error - ' + e.getMessage();
+        }catch(CalloutException e){
+            System.debug('Callout Exception: ' + e.getMessage());
+            return 'Error - Callout Exception - ' + e.getMessage();
+        }catch(Exception e){
+            System.debug('Unexpected Exception: ' + e.getMessage());
+            return 'Error - Unexpected Error Occurred: ' + e.getMessage();
+        }        
     }
     
     /**
@@ -39,14 +59,32 @@ public class JSONPlaceholderExercise {
         // 3. Set the HTTP method to 'POST'
         request.setMethod('POST');
         // 4. Create a JSON string with the post data
-        String payload = '{"title":"My Life Story", "body": "TL/DR", "userId": "1"}';
+        Map<String, String> bodyMap = new Map<String, String>{'title' => 'My Life Story', 'body' => 'TL/DR', 'userId' => '1'};
+        String jsonString = JSON.serialize(bodyMap);
         // 5. Set the request body
-        request.setBody(payload);
-        // 6. Send the request and get the response
+        request.setBody(jsonString);
         Http http = new http();
-        HttpResponse response = http.send(request);
-        // 7. Return the response body as string
-        return response.getBody();
+        try{ 
+            HttpResponse response = http.send(request);
+            // Challenge #1 - Add error handling for non-200 status codes
+            if(response.getStatusCode() >= 200 && response.getStatusCode() <= 300){
+                // 5. Return the response body as string
+                return response.getBody();
+            }else{
+                // Challenge #4 - Create custom exception classes
+                // Throw exception if status code is non-200s
+                throw new MyCustomCalloutException('Something bad happened');
+            }
+        }catch(MyCustomCalloutException e){
+            System.debug('Custom Exception: ' + e.getMessage());
+            return 'Error - ' + e.getMessage();
+        }catch(CalloutException e){
+            System.debug('Callout Exception: ' + e.getMessage());
+            return 'Error - Callout Exception - ' + e.getMessage();
+        }catch(Exception e){
+            System.debug('Unexpected Exception: ' + e.getMessage());
+            return 'Error - Unexpected Error Occurred: ' + e.getMessage();
+        }        
     }
     
     /**
