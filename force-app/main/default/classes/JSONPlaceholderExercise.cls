@@ -31,13 +31,10 @@ public class JSONPlaceholderExercise {
                 throw new MyCustomCalloutException('Something bad happened');
             }
         }catch(MyCustomCalloutException e){
-            System.debug('Custom Exception: ' + e.getMessage());
             return 'Error - ' + e.getMessage();
         }catch(CalloutException e){
-            System.debug('Callout Exception: ' + e.getMessage());
             return 'Error - Callout Exception - ' + e.getMessage();
         }catch(Exception e){
-            System.debug('Unexpected Exception: ' + e.getMessage());
             return 'Error - Unexpected Error Occurred: ' + e.getMessage();
         }        
     }
@@ -76,13 +73,10 @@ public class JSONPlaceholderExercise {
                 throw new MyCustomCalloutException('Something bad happened');
             }
         }catch(MyCustomCalloutException e){
-            System.debug('Custom Exception: ' + e.getMessage());
             return 'Error - ' + e.getMessage();
         }catch(CalloutException e){
-            System.debug('Callout Exception: ' + e.getMessage());
             return 'Error - Callout Exception - ' + e.getMessage();
         }catch(Exception e){
-            System.debug('Unexpected Exception: ' + e.getMessage());
             return 'Error - Unexpected Error Occurred: ' + e.getMessage();
         }        
     }
